@@ -35,7 +35,9 @@ size_t accountclient_callback(char* ptr, size_t size, size_t nmemb,
 
 void accountclient_Profile(void* minegetter, char* username, int timestamp);
 
-void accountclient_NameHistroy(char* minegetter, char* UUID);
+void accountclient_NameHistroy(void* minegetter, char* UUID);
+
+void accountclient_ProfileSkin(void* minegetter, char* UUID);
 
 void accountclient_Clean(void* minegetter);
 

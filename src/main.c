@@ -17,25 +17,26 @@
 /* Project Headers */
 #include "AccountsClient.h"
 
-/* This is all pretty terrible, but it's only used for testing while I get the
-library figured out. Stay tuned for when this isn't completely garbage. */
+/* This is all pretty terrible and useless,
+but it's only used for testing while I get thelibrary figured out.
+Stay tuned for when this isn't completely garbage. */
 
 int main(int argc, const char* argv[]) {
   void* minegetter = accountclient_Init();
 
+  int i;
   if (minegetter) {
-    /*if (argc > 1) {
-      for (int i = 1; i < argc; i++) {
+    if (argc > 1) {
+      for (i = 1; i < argc; i++) {
         char UUID[33];
         strcpy(UUID, argv[i]);
         accountclient_NameHistroy(minegetter, UUID);
       }
     } else {
       printf("wtf beef\n");
-    }*/
+    }
 
     if (argc > 1) {
-      int i;
       for (i = 1; i < argc; i++) {
         char username[17];
         strcpy(username, argv[i]);
@@ -44,6 +45,18 @@ int main(int argc, const char* argv[]) {
       }
     } else {
       printf("wtf beef\n"); /* TODO Proper CLI UI stuff */
+    }
+  }
+
+  if (minegetter) {
+    if (argc > 1) {
+      for (i = 1; i < argc; i++) {
+        char UUID[33];
+        strcpy(UUID, argv[i]);
+        accountclient_ProfileSkin(minegetter, UUID);
+      }
+    } else {
+      printf("wtf beef\n");
     }
   }
 

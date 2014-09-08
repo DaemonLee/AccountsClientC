@@ -16,7 +16,7 @@
 
 /* Random TODOs:
   FINISH THE BASIC API FUNCTIONS!
-  Implement JSON parsing with some type of external library
+  Implement JSON parsing with some type of external library, most likely jansson
   wrap low-level function into higher level stuff, getname, getuuid, etc. Using
   said json library.
 */
@@ -38,11 +38,7 @@ void* accountclient_Init() {
     curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYPEER, 2L);
     curl_easy_setopt(curl_handle, CURLOPT_SSL_VERIFYHOST, 2L);
 
-    curl_easy_setopt(curl_handle, CURLOPT_ACCEPT_ENCODING, "");
-
     curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
-
-    curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
     /* TODO Verbose mode
     if (0) curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L); */
@@ -87,10 +83,17 @@ void accountclient_Profile(void* minegetter, char* username, int timestamp) {
   accountclient_Get(minegetter, url);
 }
 
-void accountclient_NameHistroy(char* minegetter, char* UUID) {
+void accountclient_NameHistroy(void* minegetter, char* UUID) {
   char url[76] = "https://api.mojang.com/user/profiles/";
   strcat(url, UUID);
   strcat(url, "/names");
+
+  accountclient_Get(minegetter, url);
+}
+
+void accountclient_ProfileSkin(void* minegetter, char* UUID) {
+  char url[91] = "https://sessionserver.mojang.com/session/minecraft/profile/";
+  strcat(url, UUID);
 
   accountclient_Get(minegetter, url);
 }
