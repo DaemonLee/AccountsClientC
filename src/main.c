@@ -18,7 +18,7 @@
 #include "AccountsClient.h"
 
 /* This is all pretty terrible and useless,
-but it's only used for testing while I get thelibrary figured out.
+but it's only used for testing while I get the library figured out.
 Stay tuned for when this isn't completely garbage. */
 
 int main(int argc, const char* argv[]) {
