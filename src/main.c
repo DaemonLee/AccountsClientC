@@ -35,14 +35,15 @@ int main(int argc, const char* argv[]) {
     }*/
 
     if (argc > 1) {
-      for (int i = 1; i < argc; i++) {
+      int i;
+      for (i = 1; i < argc; i++) {
         char username[17];
         strcpy(username, argv[i]);
-        // TODO User timestamps
+        /* TODO User timestamps */
         accountclient_Profile(minegetter, username, (int)time(NULL));
       }
     } else {
-      printf("wtf beef\n");  // TODO Proper CLI UI stuff
+      printf("wtf beef\n"); /* TODO Proper CLI UI stuff */
     }
   }
 

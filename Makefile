@@ -7,7 +7,7 @@ MAKEFLAGS += -j2
 CC = gcc
 # Don't ask me why make sometimes randomly decides to link with g++
 CXX = gcc
-CFLAGS = -c -std=c11 -Wall -Wextra -Wpedantic -O0 -g -march=native -flto -Ilib/
+CFLAGS = -c -ansi -Wall -Wextra -Wpedantic -O3 -march=native -flto -Ilib/
 LDFLAGS = -flto -lcurl
 
 SOURCES = src/main.c lib/AccountsClient.c

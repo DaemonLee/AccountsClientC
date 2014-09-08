@@ -26,7 +26,11 @@
 void* accountclient_Init() {
   CURL* curl_handle;
 
+#ifdef _WIN32
+  curl_global_init(CURL_GLOBAL_DEFAULT);
+#else
   curl_global_init(CURL_GLOBAL_SSL);
+#endif
 
   curl_handle = curl_easy_init();
 
@@ -40,8 +44,8 @@ void* accountclient_Init() {
 
     curl_easy_setopt(curl_handle, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
-    // TODO Verbose mode
-    // if (0) curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
+    /* TODO Verbose mode
+    if (0) curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L); */
 
     return curl_handle;
   }
@@ -56,11 +60,12 @@ size_t accountclient_callback(char* ptr, size_t size, size_t nmemb,
 }
 
 void accountclient_Get(void* minegetter, char* url) {
+  CURLcode res;
   curl_easy_setopt(minegetter, CURLOPT_WRITEFUNCTION, accountclient_callback);
 
   curl_easy_setopt(minegetter, CURLOPT_URL, url);
 
-  CURLcode res = curl_easy_perform(minegetter);
+  res = curl_easy_perform(minegetter);
 
   if (res != CURLE_OK)
     fprintf(stderr, "curl_easy_perform() failed: %s\n",
