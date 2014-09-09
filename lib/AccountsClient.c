@@ -15,7 +15,6 @@
 */
 
 /* Random TODOs:
-  FINISH THE BASIC API FUNCTIONS!
   Implement JSON parsing with some type of external library, most likely jansson
   wrap low-level function into higher level stuff, getname, getuuid, etc. Using
   said json library.
@@ -23,7 +22,7 @@
 
 #include "AccountsClient.h"
 
-void* accountclient_Init() {
+void* accountsclient_Init() {
   CURL* curl_handle;
 
 #ifdef _WIN32
@@ -49,15 +48,15 @@ void* accountclient_Init() {
 }
 
 /* This function was designed to be hacked, go crazy! */
-size_t accountclient_callback(char* ptr, size_t size, size_t nmemb,
-                              void* userdata) {
+size_t accountsclient_callback(char* ptr, size_t size, size_t nmemb,
+                               void* userdata) {
   printf("%s\n", ptr);
   return nmemb;
 }
 
-void accountclient_Get(void* minegetter, char* url) {
+void accountsclient_Get(void* minegetter, char* url) {
   CURLcode res;
-  curl_easy_setopt(minegetter, CURLOPT_WRITEFUNCTION, accountclient_callback);
+  curl_easy_setopt(minegetter, CURLOPT_WRITEFUNCTION, accountsclient_callback);
 
   curl_easy_setopt(minegetter, CURLOPT_URL, url);
 
@@ -68,7 +67,32 @@ void accountclient_Get(void* minegetter, char* url) {
             curl_easy_strerror(res));
 }
 
-void accountclient_Profile(void* minegetter, char* username, int timestamp) {
+void accountsclient_UUID(void* minegetter, char* username) {
+  /* data may look insane, but it's really just a simple hand-written JSON. */
+  CURLcode res;
+  struct curl_slist* header = NULL;
+  char data[49] = "[{\"name\":\"";
+  header = curl_slist_append(header, "Content-Type: application/json");
+  strcat(data, username);
+  strcat(data, "\",\"agent\":\"Minecraft\"}]");
+
+  curl_easy_setopt(minegetter, CURLOPT_HTTPHEADER, header);
+
+  curl_easy_setopt(minegetter, CURLOPT_WRITEFUNCTION, accountsclient_callback);
+
+  curl_easy_setopt(minegetter, CURLOPT_URL,
+                   "https://api.mojang.com/profiles/page/1");
+
+  curl_easy_setopt(minegetter, CURLOPT_POSTFIELDS, data);
+
+  res = curl_easy_perform(minegetter);
+
+  if (res != CURLE_OK)
+    fprintf(stderr, "curl_easy_perform() failed: %s\n",
+            curl_easy_strerror(res));
+}
+
+void accountsclient_Profile(void* minegetter, char* username, int timestamp) {
   /*
   Not technically safe for January 19, 2038! But screw it! Minecraft will be
   dead by then anyway... Or Minecraft 2: Modern Cobblefare will be around.
@@ -80,22 +104,25 @@ void accountclient_Profile(void* minegetter, char* username, int timestamp) {
   strcat(url, "?at=");
   strcat(url, timestampstr);
 
-  accountclient_Get(minegetter, url);
+  accountsclient_Get(minegetter, url);
 }
 
-void accountclient_NameHistroy(void* minegetter, char* UUID) {
+void accountsclient_NameHistroy(void* minegetter, char* UUID) {
   char url[76] = "https://api.mojang.com/user/profiles/";
   strcat(url, UUID);
   strcat(url, "/names");
 
-  accountclient_Get(minegetter, url);
+  accountsclient_Get(minegetter, url);
 }
 
-void accountclient_ProfileSkin(void* minegetter, char* UUID) {
+void accountsclient_ProfileSkin(void* minegetter, char* UUID) {
   char url[91] = "https://sessionserver.mojang.com/session/minecraft/profile/";
   strcat(url, UUID);
 
-  accountclient_Get(minegetter, url);
+  accountsclient_Get(minegetter, url);
 }
 
-void accountclient_Clean(void* minegetter) { curl_easy_cleanup(minegetter); }
+void accountsclient_Clean(void* minegetter) {
+  curl_easy_cleanup(minegetter);
+  curl_global_cleanup();
+}

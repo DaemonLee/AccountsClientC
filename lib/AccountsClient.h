@@ -26,19 +26,21 @@
 /* Curl Headers */
 #include <curl/curl.h>
 
-void* accountclient_Init();
+void* accountsclient_Init();
 
-void accountclient_Get(void* minegetter, char* url);
+void accountsclient_Get(void* minegetter, char* url);
 
-size_t accountclient_callback(char* ptr, size_t size, size_t nmemb,
-                              void* userdata);
+void accountsclient_UUID(void* minegetter, char* username);
 
-void accountclient_Profile(void* minegetter, char* username, int timestamp);
+size_t accountsclient_callback(char* ptr, size_t size, size_t nmemb,
+                               void* userdata);
 
-void accountclient_NameHistroy(void* minegetter, char* UUID);
+void accountsclient_Profile(void* minegetter, char* username, int timestamp);
 
-void accountclient_ProfileSkin(void* minegetter, char* UUID);
+void accountsclient_NameHistroy(void* minegetter, char* UUID);
 
-void accountclient_Clean(void* minegetter);
+void accountsclient_ProfileSkin(void* minegetter, char* UUID);
+
+void accountsclient_Clean(void* minegetter);
 
 #endif

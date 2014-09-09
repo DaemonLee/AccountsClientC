@@ -21,46 +21,39 @@
 but it's only used for testing while I get the library figured out.
 Stay tuned for when this isn't completely garbage. */
 
+/* TODO Proper CLI UI stuff */
+
 int main(int argc, const char* argv[]) {
-  void* minegetter = accountclient_Init();
+  void* minegetter = accountsclient_Init();
 
   int i;
+  char username[17];
+  char UUID[33];
   if (minegetter) {
     if (argc > 1) {
       for (i = 1; i < argc; i++) {
         char UUID[33];
         strcpy(UUID, argv[i]);
-        accountclient_NameHistroy(minegetter, UUID);
+        accountsclient_NameHistroy(minegetter, UUID);
       }
-    } else {
-      printf("wtf beef\n");
-    }
-
-    if (argc > 1) {
       for (i = 1; i < argc; i++) {
-        char username[17];
         strcpy(username, argv[i]);
         /* TODO User timestamps */
-        accountclient_Profile(minegetter, username, (int)time(NULL));
+        accountsclient_Profile(minegetter, username, (int)time(NULL));
       }
-    } else {
-      printf("wtf beef\n"); /* TODO Proper CLI UI stuff */
-    }
-  }
-
-  if (minegetter) {
-    if (argc > 1) {
       for (i = 1; i < argc; i++) {
-        char UUID[33];
         strcpy(UUID, argv[i]);
-        accountclient_ProfileSkin(minegetter, UUID);
+        accountsclient_ProfileSkin(minegetter, UUID);
+      }
+      for (i = 1; i < argc; i++) {
+        strcpy(username, argv[i]);
+        accountsclient_UUID(minegetter, username);
       }
     } else {
       printf("wtf beef\n");
     }
   }
-
-  accountclient_Clean(minegetter);
+  accountsclient_Clean(minegetter);
 
   return 0;
 }
