@@ -28,3 +28,4 @@ clean:
 	rm -f $(EXECUTABLE)
 	rm -f core.*
 	rm -f vgcore.*
+	rm -f callgrind.out.*
