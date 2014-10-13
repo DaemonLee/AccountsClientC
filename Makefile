@@ -5,7 +5,6 @@
 MAKEFLAGS += -j2
 
 CC = gcc
-# Don't ask me why make sometimes randomly decides to link with g++
 CXX = gcc
 CFLAGS = -c -ansi -Wall -Wextra -Wpedantic -O3 -march=native -flto -Ilib/
 LDFLAGS = -flto -lcurl
@@ -18,10 +17,10 @@ EXECUTABLE = mineget
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CXX) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	rm -f $(OBJECTS)
