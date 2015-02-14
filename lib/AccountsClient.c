@@ -22,6 +22,8 @@
 
 #include "AccountsClient.h"
 
+struct curl_slist* header = NULL;
+
 void* accountsclient_Init() {
   CURL* curl_handle;
 
@@ -70,7 +72,6 @@ void accountsclient_Get(void* minegetter, char* url) {
 void accountsclient_UUID(void* minegetter, char* username) {
   /* data may look insane, but it's really just a simple hand-written JSON. */
   CURLcode res;
-  struct curl_slist* header = NULL;
 
   char data[50] = "[{\"name\":\"";
   header = curl_slist_append(header, "Content-Type: application/json");
@@ -91,8 +92,6 @@ void accountsclient_UUID(void* minegetter, char* username) {
   if (res != CURLE_OK)
     fprintf(stderr, "curl_easy_perform() failed: %s\n",
             curl_easy_strerror(res));
-
-  curl_slist_free_all(header);
 }
 
 void accountsclient_Profile(void* minegetter, char* username, int timestamp) {
@@ -127,5 +126,6 @@ void accountsclient_ProfileSkin(void* minegetter, char* UUID) {
 
 void accountsclient_Clean(void* minegetter) {
   curl_easy_cleanup(minegetter);
+  curl_slist_free_all(header);
   curl_global_cleanup();
 }
