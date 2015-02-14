@@ -71,7 +71,8 @@ void accountsclient_UUID(void* minegetter, char* username) {
   /* data may look insane, but it's really just a simple hand-written JSON. */
   CURLcode res;
   struct curl_slist* header = NULL;
-  char data[49] = "[{\"name\":\"";
+
+  char data[50] = "[{\"name\":\"";
   header = curl_slist_append(header, "Content-Type: application/json");
   strcat(data, username);
   strcat(data, "\",\"agent\":\"Minecraft\"}]");
@@ -90,6 +91,8 @@ void accountsclient_UUID(void* minegetter, char* username) {
   if (res != CURLE_OK)
     fprintf(stderr, "curl_easy_perform() failed: %s\n",
             curl_easy_strerror(res));
+
+  curl_slist_free_all(header);
 }
 
 void accountsclient_Profile(void* minegetter, char* username, int timestamp) {
@@ -98,7 +101,7 @@ void accountsclient_Profile(void* minegetter, char* username, int timestamp) {
   dead by then anyway... Or Minecraft 2: Modern Cobblefare will be around.
   */
   char url[79] = "https://api.mojang.com/users/profiles/minecraft/";
-  char timestampstr[10];
+  char timestampstr[11];
   sprintf(timestampstr, "%d", timestamp);
   strcat(url, username);
   strcat(url, "?at=");
@@ -116,7 +119,7 @@ void accountsclient_NameHistroy(void* minegetter, char* UUID) {
 }
 
 void accountsclient_ProfileSkin(void* minegetter, char* UUID) {
-  char url[91] = "https://sessionserver.mojang.com/session/minecraft/profile/";
+  char url[92] = "https://sessionserver.mojang.com/session/minecraft/profile/";
   strcat(url, UUID);
 
   accountsclient_Get(minegetter, url);

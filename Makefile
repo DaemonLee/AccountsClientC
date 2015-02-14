@@ -1,13 +1,7 @@
 # Makefile for mineget - Licensed under Apache 2.0 - See LICENSE for more info
 
-# Builds on Arch Linux with gcc 4.9.1
-
-MAKEFLAGS += -j2
-
-CC = gcc
-CXX = gcc
-CFLAGS = -c -ansi -Wall -Wextra -Wpedantic -O3 -march=native -flto -Ilib/
-LDFLAGS = -flto -lcurl
+CFLAGS = -c -ansi -Wall -Wextra -Wpedantic -Ilib/ $(shell pkg-config libcurl --cflags)
+LDFLAGS = $(shell pkg-config libcurl --libs)
 
 SOURCES = src/main.c lib/AccountsClient.c
 OBJECTS = $(SOURCES:.c=.o)
@@ -19,12 +13,9 @@ all: $(SOURCES) $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
-.cpp.o:
+.c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
-	rm -f $(EXECUTABLE)
-	rm -f core.*
-	rm -f vgcore.*
-	rm -f callgrind.out.*
+	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f core.* vgcore.* callgrind.out.*

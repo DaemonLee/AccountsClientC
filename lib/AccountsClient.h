@@ -14,8 +14,8 @@
   limitations under the License.
 */
 
-#ifndef ACCOUNTSCLIENTC
-#define ACCOUNTSCLIENTC
+#ifndef ACCOUNTSCLIENT_H
+#define ACCOUNTSCLIENT_H
 
 /* System Headers */
 #include <stdio.h>
@@ -43,4 +43,4 @@ void accountsclient_ProfileSkin(void* minegetter, char* UUID);
 
 void accountsclient_Clean(void* minegetter);
 
-#endif
+#endif /* ACCOUNTSCLIENT_H */
