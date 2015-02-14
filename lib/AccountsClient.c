@@ -1,5 +1,5 @@
 /*  AccountsClientC - A libary to access Mojang's UUID API.
-  Copyright 2014 Daemon Lee Schmidt
+  Copyright 2015 Daemon Lee Schmidt
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
